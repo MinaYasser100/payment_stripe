@@ -17,12 +17,27 @@ class StripeService {
     return paymentIntentModel;
   }
 
+  // setup to payment sheet
   Future initPaymentSheet({required String paymentIntentClientSecret}) async {
     Stripe.instance.initPaymentSheet(
       paymentSheetParameters: SetupPaymentSheetParameters(
         paymentIntentClientSecret: paymentIntentClientSecret,
-        merchantDisplayName: 'Mina',
+        merchantDisplayName: 'mina',
       ),
     );
+  }
+
+  // response for display payment sheet
+  Future displayPaymentSheet() async {
+    Stripe.instance.presentPaymentSheet();
+  }
+
+  Future makePayment(
+      {required PaymentIntentInputModel paymentIntentInputModel}) async {
+    var paymentIntentModel =
+        await createPaymentIntentModel(paymentIntentInputModel);
+    await initPaymentSheet(
+        paymentIntentClientSecret: paymentIntentModel.clientSecret!);
+    await displayPaymentSheet();
   }
 }
