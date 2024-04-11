@@ -6,8 +6,10 @@ class CustomButtonApp extends StatelessWidget {
     super.key,
     required this.textButton,
     required this.onTap,
+    this.isLoading = false,
   });
   final String textButton;
+  final bool isLoading;
   final Function() onTap;
   @override
   Widget build(BuildContext context) {
@@ -24,10 +26,12 @@ class CustomButtonApp extends StatelessWidget {
           ),
         ),
         child: Center(
-          child: Text(
-            textButton,
-            style: Styles.style22,
-          ),
+          child: isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : Text(
+                  textButton,
+                  style: Styles.style22,
+                ),
         ),
       ),
     );
